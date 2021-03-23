@@ -7,7 +7,7 @@ interface AppProps {
   Component: NextComponentType;
   pageProps: any;
 }
-class App extends React.Component<AppProps> {
+export default class App extends React.Component<AppProps> {
   render() {
     return (
       <ChakraProvider theme={theme}>
@@ -23,5 +23,3 @@ class App extends React.Component<AppProps> {
     );
   }
 }
-
-export default App;

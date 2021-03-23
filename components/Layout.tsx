@@ -1,11 +1,15 @@
+import Header from "../components/sections/Header";
 import { Container } from "@chakra-ui/layout";
 
 export default function Layout({ children }) {
   return (
-    <Container>
-      <main>
-        {children}
-      </main>
-    </Container>
+    <>
+      <Header />
+      <Container>
+        <main>
+          {children}
+        </main>
+      </Container >
+    </>
   )
 }
