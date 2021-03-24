@@ -1,16 +1,22 @@
-import React from "react";
 import MenuItem from "../ui/menu/MenuItem";
-import { Box, Button, ButtonGroup, Flex, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { useState } from "react";
+import { useSession } from "next-auth/client";
+import { Avatar, Box, Button, ButtonGroup, Flex, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { signIn } from "next-auth/client";
 
 export default function Header(props) {
-    const { colorMode, toggleColorMode } = useColorMode();
-    const navColor = useColorModeValue("transparent", "gray.900");
-    const iconColor = useColorModeValue("black", "white");
-    const themeIcon = colorMode === "light" ? <MoonIcon /> : <SunIcon />;
-    const [navShow, setNavOpen] = React.useState(false);
+    const { toggleColorMode } = useColorMode();
+    const color = useColorModeValue("gray.800", "white");
+    const navColor = useColorModeValue("gray.200", "gray.900");
+    const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
+    const [navShow, setNavOpen] = useState(false);
+    const [session] = useSession();
+    const trimName = (name: string, maxLength = 12): string => {
+        if (name.length >= maxLength) return `${name.slice(0, maxLength)}...`;
+        return name;
+    };
     const toggleMenu = () => setNavOpen(!navShow);
+
     return (
         <Flex
             as="nav"
@@ -24,12 +30,21 @@ export default function Header(props) {
             color="white"
             {...props}
         >
-            <Flex align="left">
-                {/* For an Logo component */}
+            <Flex align="left" textColor={color}>
+                {!session && (<></>)}
+                {session && (<>
+                    {session.user.image && <>
+                        <Avatar src={session.user.image} name={session.user.name} />
+                    </>}
+                    <Flex direction="column" ml={session.user.image ? 3 : 0}>
+                        <Text as="small">Signed in as</Text>
+                        <Text as="h1" fontWeight="bold">{trimName(session.user.name)}</Text>
+                    </Flex>
+                </>)}
             </Flex>
 
             <Box display={{ base: "block", md: "none" }}>
-                <ButtonGroup isAttached color={iconColor}>
+                <ButtonGroup isAttached color={color}>
                     <Button mr="-px" onClick={toggleColorMode}>
                         {themeIcon}
                     </Button>
@@ -47,27 +62,31 @@ export default function Header(props) {
                 <Flex
                     align="center"
                     justify={["center", "center", "flex-end", "flex-end"]}
-                    direction={["column", "row", "row", "row"]}
+                    direction={["column", "column", "row", "row"]}
                     pt={[5, 5, 0, 0]}
                 >
                     <Box display={{ base: "none", md: "block" }} >
                         <ButtonGroup>
-                            <MenuItem to="/">
-                                <Button fontWeight="normal">Home</Button>
-                            </MenuItem>
-                            <MenuItem to="/api/auth/signin" onClick={signIn}>
-                                <Button fontWeight="normal">Sign In</Button>
-                            </MenuItem>
-                            <MenuItem isLast>
-                                <Button onClick={toggleColorMode}>{themeIcon}</Button>
+                            <MenuItem to="/">Home</MenuItem>
+                            {!session && <MenuItem to="/api/auth/signin">
+                                Sign In
+                            </MenuItem>}
+                            {session && <MenuItem to="/api/auth/signout">
+                                Sign Out
+                            </MenuItem>}
+                            <MenuItem onClick={toggleColorMode} isLast>
+                                {themeIcon}
                             </MenuItem>
                         </ButtonGroup>
                     </Box>
-                    <Box display={{ base: "block", md: "none" }} >
+                    <Box textAlign="center" display={{ base: "block", md: "none" }} >
                         <MenuItem to="/">Home</MenuItem>
-                        <MenuItem to="/api/auth/signin" onClick={(e) => { e.preventDefault(); signIn(); }} isLast>
+                        {!session && <MenuItem to="/api/auth/signin">
                             Sign In
-                        </MenuItem>
+                        </MenuItem>}
+                        {session && <MenuItem to="/api/auth/signout">
+                            Sign Out
+                        </MenuItem>}
                     </Box>
                 </Flex>
             </Box>
