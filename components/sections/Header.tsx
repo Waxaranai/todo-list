@@ -46,7 +46,7 @@ export default function Header(props) {
             >
                 <Flex
                     align="center"
-                    justify={["center", "flex-end", "flex-end", "flex-end"]}
+                    justify={["center", "center", "flex-end", "flex-end"]}
                     direction={["column", "row", "row", "row"]}
                     pt={[5, 5, 0, 0]}
                 >
