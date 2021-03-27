@@ -1,4 +1,4 @@
-import MenuItem from "../ui/menu/MenuItem";
+import MenuItem from "../ui/MenuItem";
 import { useState } from "react";
 import { useSession } from "next-auth/client";
 import { Avatar, Box, Button, ButtonGroup, Flex, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
