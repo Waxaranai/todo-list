@@ -1,4 +1,5 @@
-import Header from "../components/sections/Header";
+import React from "react";
+import Header from "./sections/Header";
 import { Container } from "@chakra-ui/layout";
 
 export default function Layout({ children }) {
@@ -9,7 +10,7 @@ export default function Layout({ children }) {
         <main>
           {children}
         </main>
-      </Container >
+      </Container>
     </>
   )
 }
