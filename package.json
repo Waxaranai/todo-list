@@ -2,7 +2,7 @@
   "name": "todo-list",
   "version": "0.0.0",
   "private": false,
-  "description": "An todo list app created using Next.js and NextAuth.js styled with chakra-ui and written in typescript",
+  "description": "A todo list app created using Next.js and NextAuth.js styled with chakra-ui and written in typescript",
   "repository": "https://github.com/Waxaranai/todo-list.git",
   "bugs": {
     "url": "https://github.com/Waxaranai/todo-list/issues"
@@ -13,7 +13,7 @@
     "build": "next build",
     "start": "next start"
   },
-  "author": "Waxaranai <contact@wisnu.me",
+  "author": "Waxaranai <contact@wisnu.me>",
   "license": "AGPL-3.0",
   "dependencies": {
     "@chakra-ui/icons": "^1.0.7",
