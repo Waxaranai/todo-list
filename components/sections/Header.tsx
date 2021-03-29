@@ -1,95 +1,88 @@
-import MenuItem from "../ui/MenuItem";
-import { useState } from "react";
+import React from "react";
+import MobileNav from "../ui/MobileNav";
+import DesktopNav from "../ui/DesktopNav";
+import AvatarDropdown from "../ui/AvatarDropdown";
+import { Box, Flex, Text, IconButton, Button, Stack, Collapse, useColorModeValue, useBreakpointValue, useDisclosure, useColorMode } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/client";
-import { Avatar, Box, Button, ButtonGroup, Flex, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { INavItem } from "../../interfaces";
 
-export default function Header(props) {
-    const { toggleColorMode } = useColorMode();
-    const color = useColorModeValue("gray.800", "white");
-    const navColor = useColorModeValue("gray.200", "gray.900");
-    const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
-    const [navShow, setNavOpen] = useState(false);
-    const [session] = useSession();
-    const trimName = (name: string, maxLength = 12): string => {
-        if (name.length >= maxLength) return `${name.slice(0, maxLength)}...`;
-        return name;
-    };
-    const toggleMenu = () => setNavOpen(!navShow);
+const NavItems: Array<INavItem> = [
+  {
+    label: "Home",
+    href: "/"
+  }
+];
 
-    return (
+export default function Header() {
+  const [session] = useSession();
+  const { isOpen, onToggle } = useDisclosure();
+  const { toggleColorMode } = useColorMode();
+
+  return (
+    <Box>
+      <Flex
+        bg={useColorModeValue("white", "gray.800")}
+        color={useColorModeValue("gray.600", "white")}
+        minH={"60px"}
+        py={{ base: 2 }}
+        px={{ base: 4 }}
+        borderBottom={1}
+        borderStyle={"solid"}
+        borderColor={useColorModeValue("gray.200", "gray.900")}
+        align={"center"}>
         <Flex
-            as="nav"
-            align="center"
-            justify="space-between"
-            wrap="wrap"
-            w="100%"
-            mb={8}
-            p={3}
-            bg={navColor}
-            color="white"
-            {...props}
-        >
-            <Flex align="left" textColor={color}>
-                {!session && (<></>)}
-                {session && (<>
-                    {session.user.image && <>
-                        <Avatar src={session.user.image} name={session.user.name} />
-                    </>}
-                    <Flex direction="column" ml={session.user.image ? 3 : 0}>
-                        <Text as="small">Signed in as</Text>
-                        <Text as="h1" fontWeight="bold">{trimName(session.user.name)}</Text>
-                    </Flex>
-                </>)}
-            </Flex>
-
-            <Box display={{ base: "block", md: "none" }}>
-                <ButtonGroup isAttached color={color}>
-                    <Button mr="-px" onClick={toggleColorMode}>
-                        {themeIcon}
-                    </Button>
-                    <Button onClick={toggleMenu}>
-                        {navShow ? <CloseIcon /> : <HamburgerIcon />}
-                    </Button>
-                </ButtonGroup>
-
-            </Box>
-
-            <Box
-                display={{ base: navShow ? "block" : "none", md: "block" }}
-                flexBasis={{ base: "100%", md: "auto" }}
-            >
-                <Flex
-                    align="center"
-                    justify={["center", "center", "flex-end", "flex-end"]}
-                    direction={["column", "column", "row", "row"]}
-                    pt={[5, 5, 0, 0]}
-                >
-                    <Box display={{ base: "none", md: "block" }} >
-                        <ButtonGroup>
-                            <MenuItem to="/">Home</MenuItem>
-                            {!session && <MenuItem to="/api/auth/signin">
-                                Sign In
-                            </MenuItem>}
-                            {session && <MenuItem to="/api/auth/signout">
-                                Sign Out
-                            </MenuItem>}
-                            <MenuItem onClick={toggleColorMode} isLast>
-                                {themeIcon}
-                            </MenuItem>
-                        </ButtonGroup>
-                    </Box>
-                    <Box textAlign="center" display={{ base: "block", md: "none" }} >
-                        <MenuItem to="/">Home</MenuItem>
-                        {!session && <MenuItem to="/api/auth/signin">
-                            Sign In
-                        </MenuItem>}
-                        {session && <MenuItem to="/api/auth/signout">
-                            Sign Out
-                        </MenuItem>}
-                    </Box>
-                </Flex>
-            </Box>
+          flex={{ base: 1, md: "auto" }}
+          ml={{ base: -2 }}
+          display={{ base: "flex", md: "none" }}>
+          <IconButton
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={"ghost"}
+            aria-label={"Toggle Navigation"}
+          />
         </Flex>
-    );
+        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+          <Text
+            textAlign={useBreakpointValue({ base: "center", md: "left" })}
+            fontFamily={"heading"}
+            color={useColorModeValue("gray.800", "white")}>
+            Logo
+            </Text>
+
+          <Flex display={{ base: "none", md: "flex" }} ml={10}>
+            <DesktopNav items={NavItems} />
+          </Flex>
+        </Flex>
+
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={"flex-end"}
+          direction={"row"}
+          spacing={2}>
+          <IconButton
+            onClick={toggleColorMode}
+            aria-label={"Toggle Theme"}
+            variant={"unstyled"}>
+            {useColorModeValue(<MoonIcon />, <SunIcon />)}
+          </IconButton>
+          {!session && (<Button
+            as={"a"}
+            fontSize={"sm"}
+            fontWeight={400}
+            variant={"link"}
+            href={"/api/auth/signin"}>
+            Sign In
+          </Button>)}
+          {session && <AvatarDropdown session={session} />}
+        </Stack>
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <MobileNav items={NavItems} />
+      </Collapse>
+    </Box>
+  );
 }
