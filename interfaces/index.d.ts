@@ -4,3 +4,11 @@ export interface INavItem {
     children?: Array<INavItem>;
     href?: string;
 }
+
+export interface ITodoItem {
+    id: string;
+    text: string;
+    completed: boolean;
+    timestamp: number;
+}
+
