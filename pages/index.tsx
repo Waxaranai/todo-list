@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import TodoInput from "../components/ui/TodoInput";
 import TodoItem from "../components/ui/TodoItem";
-import { Text, Stack, SlideFade } from "@chakra-ui/react";
+import { Text, Stack } from "@chakra-ui/react";
 import { ITodoItem } from "../interfaces";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ButtonGroup, Checkbox, Flex, IconButton, Input, InputGroup, InputLeftAddon, InputRightAddon, SlideFade } from "@chakra-ui/react";
+import { ButtonGroup, Checkbox, Flex, IconButton, Input, InputGroup, InputLeftAddon, InputRightAddon } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { deleteTodo, editTodo, markTodo } from "../../redux/actions/todosAction";
 
