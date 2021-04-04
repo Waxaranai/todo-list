@@ -43,7 +43,7 @@ function TodoItem(props) {
         <Flex>
             <InputGroup>
                 <InputLeftAddon display={isEditing ? "none" : "inline-flex"}>
-                    <Checkbox colorScheme={"pink"} isChecked={isCompleted} onChange={() => {
+                    <Checkbox colorScheme={"teal"} isChecked={isCompleted} onChange={() => {
                         setCompleted(!isCompleted);
                         return markItem(Object.assign({}, item, { completed: !isCompleted }));
                     }}>
