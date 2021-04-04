@@ -6,7 +6,6 @@ import { Text, Stack, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui
 import { ITodoItem } from "../interfaces";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { DeleteIcon } from "@chakra-ui/icons";
 
 interface HomeProps {
   items: ITodoItem[]
