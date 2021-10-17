@@ -1,6 +1,6 @@
 {
   "name": "todo-list",
-  "version": "0.0.0",
+  "version": "1.0.0-BETA",
   "private": false,
   "description": "A todo list app created using Next.js and NextAuth.js styled with chakra-ui and written in typescript",
   "repository": "https://github.com/Waxaranai/todo-list.git",
